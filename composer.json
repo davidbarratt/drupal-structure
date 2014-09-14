@@ -1,0 +1,38 @@
+{
+  "name": "davidbarratt/drupal-structure",
+  "description": "Giving Drupal 6 & 7 a Directory Sturcture like Drupal 8 via Composer",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/davidbarratt/drupal-structure",
+  "authors": [
+    {
+      "name": "David Barratt",
+      "email": "david@davidwbarratt.com",
+      "homepage": "http://davidwbarratt.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "DavidBarratt\\DrupalStructure\\": ""
+    }
+  },
+  "require": {
+    "symfony/filesystem": "~2.0",
+    "symfony/finder": "~2.0"
+  },
+  "require-dev": {
+    "composer/composer": "1.0.*@alpha"
+  },
+  "extra": {
+    "drupal-structure": {
+      "root": "web"
+    }
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "DavidBarratt\\DrupalStructure\\ScriptHandler::postUpdate"
+    ],
+    "post-update-cmd": [
+      "DavidBarratt\\DrupalStructure\\ScriptHandler::postUpdate"
+    ]
+  }
+}
