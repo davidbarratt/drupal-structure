@@ -28,13 +28,18 @@ class Structure {
         $extra = $composer->getPackage()->getExtra();
 
         if (!empty($extra['drupal-structure']['root'])) {
-          $this->root = rtrim($extra['drupal-structure']['root'], '/') . '/';
+          $this->root = getcwd().'/'.rtrim($extra['drupal-structure']['root'], '/') . '/';
         }
         else {
-          $this->root = '';
+          $this->root = getcwd().'/';
         }
 
-        $this->core = $this->root.'core/';
+        if (!empty($extra['drupal-structure']['core'])) {
+          $this->core = getcwd().'/'.rtrim($extra['drupal-structure']['core'], '/') . '/';
+        }
+        else {
+          $this->core = $this->root.'core/';
+        }
 
     }
 
@@ -45,6 +50,7 @@ class Structure {
       }
 
       $dirs = array(
+        $this->root.'libraries/',
         $this->root.'modules/',
         $this->root.'themes/',
         $this->root.'sites/',
@@ -69,9 +75,8 @@ class Structure {
 
       }
 
-      $this->finder->directories()->in($this->root.'sites/');
+      $this->finder->directories()->depth('== 0')->in($this->root.'sites/');
 
-      $sites = array();
       foreach ($this->finder as $folder) {
         $site = $folder->getRelativePathname();
         $folder_name = $site.'/';
@@ -86,6 +91,7 @@ class Structure {
       $contrib = array(
         'modules',
         'themes',
+        'libraries',
       );
 
       $files = array(
@@ -94,29 +100,25 @@ class Structure {
 
       foreach ($contrib as $type) {
 
-        $folder = $type.'/';
+        $folder_name = $type.'/';
 
         if (!is_link($this->core.'sites/all/'.$type)) {
 
-          $this->copyFiles('sites/all/'.$folder, $folder, $files);
+          $this->copyFiles('sites/all/'.$folder_name, $folder_name, $files);
 
-          $this->fs->remove($this->core.'sites/all/'.$folder);
+          $this->fs->remove($this->core.'sites/all/'.$folder_name);
 
-          $this->fs->symlink('../../../'.$folder, $this->core.'sites/all/'.$type);
+          $this->fs->symlink('../../../'.$folder_name, $this->core.'sites/all/'.$type);
 
         }
 
 
       }
 
-      if (!$this->fs->exists($this->root.'index.php')) {
-        $this->fs->copy($this->core.'index.php', $this->root.'index.php');
-      }
-
       if (!is_link($this->core.'sites/sites.php')) {
 
         $this->fs->touch($this->root.'sites/sites.php');
-        $this->fs->symlink('../.../sites/sites.php', $this->core.'sites/sites.php');
+        $this->fs->symlink('../../sites/sites.php', $this->core.'sites/sites.php');
 
       }
 
