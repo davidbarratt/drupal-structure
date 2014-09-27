@@ -18,8 +18,7 @@ This script does the following tasks when Composer `install` and `update` is run
 11. Create `sites/sites.php` if the file doesn’t already exist
 12. Create symbolic link from `core/sites/sites.php` to `sites/sites.php`
 
-# Installation
-
+## Installation
 Require this library in your `composer.json` file
 
 ```javascript
@@ -45,7 +44,7 @@ Add the scripts
 }
 ```
 
-# Configuration
+## Configuration
 By default, the script assumes that Drupal core is located in the `core` directory and the resources (modules, themes, etc.) are located in the same directory as your `composer.json` file.
 
 However, if you’d like to customize this, you can simply add the parameters in the `extra`. Here are the defaults (which are not necessary to add):
@@ -61,10 +60,10 @@ However, if you’d like to customize this, you can simply add the parameters in
 }
 ```
 
-# Usage
+## Usage
 You can use this script by simply executing `composer install` or `composer update`. Composer will execute the script when the process is finished.
 
-# Example
+## Example
 Here is a more practical example of how you might use this script in a real `composer.json` file. This setup assumes that the web root is `core`. However, you could copy `index.php` and `.htaccess` and alter them to fit your needs.
 
 ```javascript
